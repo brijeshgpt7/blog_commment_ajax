@@ -1,0 +1,21 @@
+<div style="float:right;">
+<button type="button" class='mybutton' >Post a New Blog!</button> 
+<div id ="mybutton"></div>
+</div>
+<div id="my_index">
+	<%= render "index"%>
+</div>
+<br>
+<script>
+$('.mybutton').click(function(){
+	$.ajax({ 
+		type : 'GET',
+		url : 'messages/new'
+	});
+});
+</script>              
+                
+                                    
+    
+    
+      

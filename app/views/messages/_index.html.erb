@@ -1,0 +1,22 @@
+ <div>
+        
+ <h1>Listing blogs</h1>
+<table border=4 style=" width: 72%;">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Total Comments</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @message.try(:each) do |m| %>
+    <tr>
+      <td><%= link_to m.title, message_path(:id=>m.id) %></td>
+      <td><%= m.comment %></td>
+      <td><%= m.message_comments.try(:count) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

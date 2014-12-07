@@ -1,0 +1,45 @@
+<h1 style="float: right;"><%= link_to "HOME",'/'%><h1>
+<h2 style="color: #2194ca;font-size: 2em;"><%= @message.title if @message.title %></h2>
+<div class="message-body-content">
+	<h4><%#= @message.title if @message.title %></h4>
+	<h3><%= @message.comment if @message.comment %>
+		<u style="font-size: x-inherit;color: steelblue; margin-right: 9%;">Posted on <%= @message.created_at.strftime('%a, %d %b %Y %H:%M:%S') %><br></u></h3>
+	</div>   
+	<div>
+		<% @message.message_comments.try(:each) do |mc|%>
+		<div style="color: green;">
+				<%= mc.comment%> <u style="font-size: inherit; color: #339966;"> <%= mc.created_at.strftime('%d %m %Y')%><%if ! mc.user_id.nil? %>	
+			post by <span style="color: red;"><%=(User.find(mc.user_id).email).split("@").first%><%end%></u></div><br>
+			<%end%>
+		</div>
+		<div class="message-post-section">
+			<h3>Post Message</h3>
+			<%= form_for MessageComment.new, :remote => true, :url => save_comment_path do |at| %>
+			<%= at.text_area :comment , :type =>'textarea',:id => 'textarea',  :rows => 3, :cols => 40 , :placeholder =>'Type your comment here…' %>
+			<% if user_signed_in? %>
+			<%= at.hidden_field :user_id, :value => current_user.id %>
+			<% end %>
+			<%= at.hidden_field :message_id , :value => @message.id %>
+
+			<%= at.submit("Post Message",:class=>'btn btn-primary') %>
+			<% end %>
+		</div>
+
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script>
+$(function() {
+  $('#new_message_comment').validate({
+    rules:{
+      'message_comment[comment]':
+      {
+        required: true
+      }
+      },
+    messages:{
+      'message_comment[comment]':{
+        required: "Please enter the comments"
+      }
+    }
+  });
+});
+</script>
